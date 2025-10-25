@@ -1,0 +1,14 @@
+{% extends 'blood/base.html' %}
+{% block content %}
+<h2>Create Donor Profile</h2>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  <input type="text" name="blood_group" placeholder="Blood Group" class="form-control mb-2" required>
+  <input type="text" name="phone" placeholder="Phone" class="form-control mb-2" required>
+  <input type="text" name="department" placeholder="Department" class="form-control mb-2" required>
+  
+  <!-- Profile picture upload -->
+  <input type="file" name="profile_pic" class="form-control mb-2">
+  
+  <button class="btn btn-danger" type="submit">Save</button>
+</form>
+{% endblock %}

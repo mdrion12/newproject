@@ -1,0 +1,8 @@
+{% extends 'blood/base.html' %}
+{% block content %}
+<h3>Request Blood from {{ donor.user.username }}</h3>
+<form method="post">{% csrf_token %}
+  <textarea name="reason" class="form-control mb-2" placeholder="Why do you need blood?" required></textarea>
+  <button class="btn btn-danger">Send Request</button>
+</form>
+{% endblock %}

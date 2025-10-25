@@ -1,0 +1,68 @@
+{% extends 'blood/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Fullscreen Background -->
+<div style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{% static 'blood/images/bg3.png' %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+"></div>
+
+<!-- Page Content -->
+<div class="container text-center" style="padding-top: 120px; color: white; text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">
+    <h1 class="mb-3" style="font-size:3rem;">Welcome to Campus Blood</h1>
+    <p class="lead mb-3" style="font-size:1.5rem;">
+        Donate blood, save lives. Your small act can make a huge difference!
+    </p>
+    
+    <p style="font-size:1.2rem;">
+        It is recommended to donate blood every <strong>3 months</strong> for men and <strong>4 months</strong> for women.
+    </p>
+
+    <a href="{% url 'login' %}" class="btn btn-light mt-3 me-2">Login</a>
+    <a href="{% url 'register' %}" class="btn btn-danger mt-3">Register</a>
+    <a href="{% url 'donor_list' %}" class="btn btn-outline-light mt-3 ms-2">View Available Donors</a>
+
+    <!-- Importance Section -->
+    <div class="mt-5 text-start p-4 rounded" style="background: rgba(0,0,0,0.5);">
+        <h3>Why Donate Blood?</h3>
+        <ul style="font-size:1.1rem;">
+            <li>One blood donation can save up to <strong>three lives</strong>.</li>
+            <li>Regular donation helps maintain healthy blood flow.</li>
+            <li>Blood is always in demand in hospitals for emergencies, surgeries, and treatments.</li>
+        </ul>
+
+        <h3>Eligibility Criteria</h3>
+        <ul style="font-size:1.1rem;">
+            <li>Age between 18-65 years.</li>
+            <li>Weight at least 50 kg.</li>
+            <li>Healthy and free from infections.</li>
+            <li>No major illnesses or chronic diseases.</li>
+        </ul>
+
+        <h3>Blood Donation Tips</h3>
+        <ul style="font-size:1.1rem;">
+            <li>Eat a healthy meal and drink plenty of water before donating.</li>
+            <li>Rest well and avoid alcohol 24 hours before donation.</li>
+            <li>After donation, avoid heavy exercise for the day.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white mt-5 py-3" style="position: relative; z-index: 1;">
+    <div class="container text-center">
+        <p>&copy; {{ now.year }} Campus Blood. All Rights Reserved.</p>
+        <p>Contact: info@campusblood.com | Phone: +880 1234 567890</p>
+    </div>
+</footer>
+{% endblock %}

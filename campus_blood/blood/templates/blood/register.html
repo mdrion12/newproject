@@ -1,0 +1,48 @@
+{% extends 'blood/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh; background: #f8f9fa;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 450px; border-radius: 15px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Register</h2>
+            <p class="text-muted">Create your Campus Blood account</p>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    {% if field.field.widget.input_type == "password" %}
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }}
+                    {% else %}
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }}
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button class="btn btn-danger w-100 mb-3" type="submit">Register</button>
+
+            <div class="text-center">
+                <p class="mb-0">Already have an account? 
+                    <a href="{% url 'login' %}" class="text-danger">Login here</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'blood/base.html' %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-4">Edit Your Profile</h2>
+
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="mb-3">
+                    <label for="id_blood_group" class="form-label">Blood Group</label>
+                    {{ form.blood_group }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_phone" class="form-label">Phone</label>
+                    {{ form.phone }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_department" class="form-label">Department</label>
+                    {{ form.department }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_profile_pic" class="form-label">Profile Picture</label>
+                    {{ form.profile_pic }}
+                    {% if donor_profile.profile_pic %}
+                        <div class="mt-2">
+                            <img src="{{ donor_profile.profile_pic.url }}" class="rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="form-check mb-3">
+                    {{ form.available }} <label class="form-check-label" for="id_available">Available</label>
+                </div>
+                <div class="mb-3">
+                    <label for="id_last_donation_date" class="form-label">Last Donation Date</label>
+                    {{ form.last_donation_date }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'blood/base.html' %}
+{% block content %}
+<h2>Available Donors</h2>
+
+<!-- Search Form -->
+<form method="GET" class="mb-3 d-flex align-items-center">
+  <label for="blood_group" class="me-2">Blood Group:</label>
+  <select name="blood_group" id="blood_group" class="form-select me-2" style="width:150px;">
+    <option value="">All</option>
+    <option value="A+" {% if selected_group == "A+" %}selected{% endif %}>A+</option>
+    <option value="A-" {% if selected_group == "A-" %}selected{% endif %}>A-</option>
+    <option value="B+" {% if selected_group == "B+" %}selected{% endif %}>B+</option>
+    <option value="B-" {% if selected_group == "B-" %}selected{% endif %}>B-</option>
+    <option value="O+" {% if selected_group == "O+" %}selected{% endif %}>O+</option>
+    <option value="O-" {% if selected_group == "O-" %}selected{% endif %}>O-</option>
+    <option value="AB+" {% if selected_group == "AB+" %}selected{% endif %}>AB+</option>
+    <option value="AB-" {% if selected_group == "AB-" %}selected{% endif %}>AB-</option>
+  </select>
+  <button type="submit" class="btn btn-primary btn-sm">Search</button>
+</form>
+
+<table class="table">
+  <tr><th>Name</th><th>Blood Group</th><th>Department</th><th>Contact</th><th>Action</th></tr>
+  {% for d in donors %}
+  <tr>
+    <td>{{ d.user.username }}</td>
+    <td>{{ d.blood_group }}</td>
+    <td>{{ d.department }}</td>
+    <td>{{ d.phone }}</td>
+    <td><a href="{% url 'request_donor' d.id %}" class="btn btn-sm btn-outline-danger">Request</a></td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="5">No donors available.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

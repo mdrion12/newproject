@@ -1,0 +1,86 @@
+{% extends 'blood/base.html' %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-4">Your Profile</h2>
+
+    {% if donor_profile %}
+    <!-- Profile Card -->
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-body text-center">
+            <!-- Profile Picture -->
+            <div class="mb-3">
+                {% if donor_profile.profile_pic %}
+                    <img src="{{ donor_profile.profile_pic.url }}" class="rounded-circle img-thumbnail" style="width:150px; height:150px; object-fit:cover;" alt="Profile Picture">
+                {% else %}
+                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail" style="width:150px; height:150px; object-fit:cover;" alt="Profile Picture">
+                {% endif %}
+            </div>
+
+            <!-- User Name -->
+            <h4 class="card-title mb-3">{{ request.user.username }}</h4>
+
+            <!-- Profile Details -->
+            <ul class="list-group list-group-flush text-start mb-3">
+                <li class="list-group-item"><strong>Blood Group:</strong> {{ donor_profile.blood_group }}</li>
+                <li class="list-group-item"><strong>Phone:</strong> {{ donor_profile.phone }}</li>
+                <li class="list-group-item"><strong>Department:</strong> {{ donor_profile.department }}</li>
+                <li class="list-group-item"><strong>Last Donation:</strong> {{ donor_profile.last_donation_date|default:"Not donated yet" }}</li>
+                <li class="list-group-item"><strong>Total Donations:</strong> {{ donor_profile.donation_count }}</li>
+                <li class="list-group-item">
+                    <strong>Available:</strong>
+                    <input type="checkbox" id="availabilityToggle" class="form-check-input ms-2" {% if donor_profile.available %}checked{% endif %}>
+                </li>
+            </ul>
+
+            <!-- Edit Button -->
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-2">Edit Profile</a>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Create Profile Form -->
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-3">Create Your Donor Profile</h5>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <input type="text" name="blood_group" placeholder="Blood Group" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <input type="text" name="phone" placeholder="Phone" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <input type="text" name="department" placeholder="Department" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <input type="file" name="profile_pic" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Save Profile</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.getElementById('availabilityToggle')?.addEventListener('change', function() {
+    fetch("{% url 'toggle_availability' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === 'success'){
+            alert("Availability: " + (data.available ? "Active" : "Inactive"));
+        } else {
+            alert("Error toggling availability");
+        }
+    });
+});
+</script>
+{% endblock %}

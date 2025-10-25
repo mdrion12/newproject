@@ -1,0 +1,47 @@
+{% extends 'blood/base.html' %}
+{% block title %}Donor Requests{% endblock %}
+
+{% block content %}
+<h2>Requests for You</h2>
+
+{% if requests %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Requester</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.requester.username }}</td>
+            <td>{{ req.reason }}</td>
+            <td>
+                {% if req.status == 'Pending' %}
+                    <span class="badge bg-warning text-dark">{{ req.status }}</span>
+                {% elif req.status == 'Approved' %}
+                    <span class="badge bg-success">{{ req.status }}</span>
+                {% else %}
+                    <span class="badge bg-danger">{{ req.status }}</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if req.status == 'Pending' %}
+                    <a href="{% url 'respond_request' req.id 'Approved' %}" class="btn btn-sm btn-success">Accept</a>
+                    <a href="{% url 'respond_request' req.id 'Rejected' %}" class="btn btn-sm btn-danger">Reject</a>
+                {% else %}
+                    <span class="text-muted">No Action</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No requests received.</p>
+{% endif %}
+
+{% endblock %}

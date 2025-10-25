@@ -1,0 +1,7 @@
+{% extends 'blood/base.html' %}
+{% block content %}
+<div class="alert alert-success">
+  Request sent successfully to {{ donor.user.username }} ({{ donor.blood_group }})
+</div>
+<a href="{% url 'donor_list' %}" class="btn btn-outline-danger">Back to Donors</a>
+{% endblock %}
