@@ -3,46 +3,94 @@
 
 {% block content %}
 <style>
-/* 🌟 Donor List Stylish Design */
+/* 🌟 Header Section */
 .page-header {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    background: linear-gradient(120deg, #ff4b2b, #ff416c);
     color: white;
     text-align: center;
     padding: 25px 0;
-    border-radius: 12px;
+    border-radius: 14px;
     margin-bottom: 30px;
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
-.donor-card {
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: white;
-}
-.donor-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-}
-.donor-card .card-header {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    color: white;
-    border-bottom: none;
-    font-weight: 600;
-    text-align: center;
-}
+
+/* 🔍 Search Box */
 .search-section {
     background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border-radius: 14px;
+    padding: 20px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
 }
-.btn-outline-danger {
+
+/* 💳 Donor Card */
+.donor-card {
+    background: #fff;
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+.donor-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* 🔸 Card Header */
+.donor-card .card-header {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    border: none;
+    padding: 12px 0;
+    letter-spacing: 0.5px;
+}
+
+/* 🩸 Profile Image */
+.donor-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ff416c;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+.donor-card:hover .donor-img {
+    transform: scale(1.08);
+    border-color: #ff4b2b;
+}
+
+/* ✍️ Donor Info */
+.donor-card p {
+    margin: 4px 0;
+    color: #444;
+    font-size: 0.95rem;
+}
+.donor-card strong {
+    color: #ff416c;
+}
+
+/* 🎯 Request Button */
+.btn-request {
     border-radius: 25px;
-    transition: 0.3s;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
 }
-.btn-outline-danger:hover {
-    background-color: #ff4b2b;
-    color: white;
+.btn-request:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255,65,108,0.4);
+}
+
+/* No donors */
+.no-donor {
+    font-weight: 600;
+    color: #777;
 }
 </style>
 
@@ -53,7 +101,7 @@
     </div>
 
     <!-- 🔍 Search Form -->
-    <div class="search-section mb-4">
+    <div class="search-section">
         <form method="GET" class="d-flex flex-wrap align-items-center justify-content-center">
             <label for="blood_group" class="me-2 fw-semibold">Filter by Blood Group:</label>
             <select name="blood_group" id="blood_group" class="form-select me-2 mb-2" style="width:150px;">
@@ -73,31 +121,31 @@
 
     <!-- 💉 Donor List -->
     {% if donors %}
-    <div class="row">
+    <div class="row justify-content-center">
         {% for d in donors %}
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4 col-sm-6 mb-4">
             <div class="card donor-card">
                 <div class="card-header">
-                    <h5 class="mb-0">{{ d.user.username }}</h5>
+                    {{ d.user.username }}
                 </div>
                 <div class="card-body text-center">
                     {% if d.profile_pic %}
-                        <img src="{{ d.profile_pic.url }}" class="rounded-circle mb-3" style="width:90px; height:90px; object-fit:cover;">
+                        <img src="{{ d.profile_pic.url }}" class="donor-img" alt="Profile">
                     {% else %}
-                        <img src="https://via.placeholder.com/90" class="rounded-circle mb-3" alt="Profile">
+                        <img src="https://via.placeholder.com/100" class="donor-img" alt="Profile">
                     {% endif %}
                     <p><strong>Blood Group:</strong> {{ d.blood_group }}</p>
                     <p><strong>Department:</strong> {{ d.department }}</p>
                     <p><strong>Phone:</strong> {{ d.phone }}</p>
-                    <a href="{% url 'request_donor' d.id %}" class="btn btn-outline-danger btn-sm mt-2">Request</a>
+                    <a href="{% url 'request_donor' d.id %}" class="btn btn-request btn-sm mt-2">Request</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <div class="text-center mt-4">
-        <p class="fw-semibold text-muted">No donors available right now 😔</p>
+    <div class="text-center mt-5">
+        <p class="no-donor">No donors available right now 😔</p>
     </div>
     {% endif %}
 </div>
