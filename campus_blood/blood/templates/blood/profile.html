@@ -2,63 +2,100 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <h2 class="text-center mb-4">Your Profile</h2>
+<style>
+/* 🌟 Custom Modern Styling */
+.profile-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+.profile-header {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: white;
+    padding: 30px 0;
+}
+.profile-header h2 {
+    font-weight: 600;
+}
+.profile-body {
+    padding: 25px;
+}
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    border: none;
+    border-radius: 30px;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+}
+#availabilityToggle {
+    cursor: pointer;
+}
+</style>
 
+<div class="container py-5">
     {% if donor_profile %}
-    <!-- Profile Card -->
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-body text-center">
-            <!-- Profile Picture -->
-            <div class="mb-3">
-                {% if donor_profile.profile_pic %}
-                    <img src="{{ donor_profile.profile_pic.url }}" class="rounded-circle img-thumbnail" style="width:150px; height:150px; object-fit:cover;" alt="Profile Picture">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail" style="width:150px; height:150px; object-fit:cover;" alt="Profile Picture">
-                {% endif %}
-            </div>
+    <div class="profile-card mx-auto" style="max-width: 650px;">
+        <!-- Header -->
+        <div class="profile-header text-center">
+            <img src="{% if donor_profile.profile_pic %}{{ donor_profile.profile_pic.url }}{% else %}https://via.placeholder.com/150{% endif %}"
+                 class="rounded-circle border border-3 border-light shadow-sm mb-3"
+                 style="width:150px; height:150px; object-fit:cover;" alt="Profile Picture">
+            <h2>{{ request.user.username }}</h2>
+            <p class="mb-0">💉 Blood Donor</p>
+        </div>
 
-            <!-- User Name -->
-            <h4 class="card-title mb-3">{{ request.user.username }}</h4>
-
-            <!-- Profile Details -->
-            <ul class="list-group list-group-flush text-start mb-3">
-                <li class="list-group-item"><strong>Blood Group:</strong> {{ donor_profile.blood_group }}</li>
-                <li class="list-group-item"><strong>Phone:</strong> {{ donor_profile.phone }}</li>
-                <li class="list-group-item"><strong>Department:</strong> {{ donor_profile.department }}</li>
-                <li class="list-group-item"><strong>Last Donation:</strong> {{ donor_profile.last_donation_date|default:"Not donated yet" }}</li>
-                <li class="list-group-item"><strong>Total Donations:</strong> {{ donor_profile.donation_count }}</li>
-                <li class="list-group-item">
-                    <strong>Available:</strong>
-                    <input type="checkbox" id="availabilityToggle" class="form-check-input ms-2" {% if donor_profile.available %}checked{% endif %}>
+        <!-- Body -->
+        <div class="profile-body">
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><strong>🩸 Blood Group:</strong> {{ donor_profile.blood_group }}</li>
+                <li class="list-group-item"><strong>📞 Phone:</strong> {{ donor_profile.phone }}</li>
+                <li class="list-group-item"><strong>🏫 Department:</strong> {{ donor_profile.department }}</li>
+                <li class="list-group-item"><strong>🗓 Last Donation:</strong> {{ donor_profile.last_donation_date|default:"Not donated yet" }}</li>
+                <li class="list-group-item"><strong>❤️ Total Donations:</strong> {{ donor_profile.donation_count }}</li>
+                <li class="list-group-item d-flex align-items-center justify-content-between">
+                    <strong>🔔 Availability:</strong>
+                    <div>
+                        <input type="checkbox" id="availabilityToggle" class="form-check-input"
+                               {% if donor_profile.available %}checked{% endif %}>
+                        <label for="availabilityToggle" class="ms-2">{{ donor_profile.available|yesno:"Available,Not Available" }}</label>
+                    </div>
                 </li>
             </ul>
-
-            <!-- Edit Button -->
-            <a href="{% url 'edit_profile' %}" class="btn btn-primary mt-2">Edit Profile</a>
+            <div class="text-center">
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary px-4 py-2">✏️ Edit Profile</a>
+            </div>
         </div>
     </div>
 
     {% else %}
-    <!-- Create Profile Form -->
-    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
-        <div class="card-body">
-            <h5 class="card-title text-center mb-3">Create Your Donor Profile</h5>
+    <div class="profile-card mx-auto" style="max-width: 550px;">
+        <div class="profile-header text-center">
+            <h2>Create Your Donor Profile</h2>
+            <p>Help save lives by joining our donor network ❤️</p>
+        </div>
+        <div class="profile-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="mb-2">
+                <div class="mb-3">
                     <input type="text" name="blood_group" placeholder="Blood Group" class="form-control" required>
                 </div>
-                <div class="mb-2">
-                    <input type="text" name="phone" placeholder="Phone" class="form-control" required>
+                <div class="mb-3">
+                    <input type="text" name="phone" placeholder="Phone Number" class="form-control" required>
                 </div>
-                <div class="mb-2">
+                <div class="mb-3">
                     <input type="text" name="department" placeholder="Department" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <input type="file" name="profile_pic" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-success w-100">Save Profile</button>
+                <button type="submit" class="btn btn-primary w-100 py-2">💾 Save Profile</button>
             </form>
         </div>
     </div>
@@ -75,10 +112,10 @@ document.getElementById('availabilityToggle')?.addEventListener('change', functi
     })
     .then(res => res.json())
     .then(data => {
-        if(data.status === 'success'){
+        if (data.status === 'success') {
             alert("Availability: " + (data.available ? "Active" : "Inactive"));
         } else {
-            alert("Error toggling availability");
+            alert("Error updating availability");
         }
     });
 });

@@ -2,46 +2,62 @@
 {% block title %}Donor Requests{% endblock %}
 
 {% block content %}
-<h2>Requests for You</h2>
-
-{% if requests %}
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Requester</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for req in requests %}
-        <tr>
-            <td>{{ req.requester.username }}</td>
-            <td>{{ req.reason }}</td>
-            <td>
+<div class="container mt-5 mb-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-danger text-white text-center rounded-top-4">
+      <h3 class="mb-0">🩸 Blood Requests for You</h3>
+    </div>
+    <div class="card-body bg-light">
+      {% if requests %}
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+          <thead class="table-danger text-dark">
+            <tr>
+              <th>Requester</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for req in requests %}
+            <tr>
+              <td class="fw-semibold">{{ req.requester.username }}</td>
+              <td class="text-muted">{{ req.reason }}</td>
+              <td>
                 {% if req.status == 'Pending' %}
-                    <span class="badge bg-warning text-dark">{{ req.status }}</span>
+                  <span class="badge bg-warning text-dark px-3 py-2">{{ req.status }}</span>
                 {% elif req.status == 'Approved' %}
-                    <span class="badge bg-success">{{ req.status }}</span>
+                  <span class="badge bg-success px-3 py-2">{{ req.status }}</span>
                 {% else %}
-                    <span class="badge bg-danger">{{ req.status }}</span>
+                  <span class="badge bg-danger px-3 py-2">{{ req.status }}</span>
                 {% endif %}
-            </td>
-            <td>
+              </td>
+              <td>
                 {% if req.status == 'Pending' %}
-                    <a href="{% url 'respond_request' req.id 'Approved' %}" class="btn btn-sm btn-success">Accept</a>
-                    <a href="{% url 'respond_request' req.id 'Rejected' %}" class="btn btn-sm btn-danger">Reject</a>
+                  <a href="{% url 'respond_request' req.id 'Approved' %}" 
+                     class="btn btn-sm btn-outline-success px-3 me-2 rounded-pill">
+                    ✅ Accept
+                  </a>
+                  <a href="{% url 'respond_request' req.id 'Rejected' %}" 
+                     class="btn btn-sm btn-outline-danger px-3 rounded-pill">
+                    ❌ Reject
+                  </a>
                 {% else %}
-                    <span class="text-muted">No Action</span>
+                  <span class="text-muted fst-italic">No Action</span>
                 {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No requests received.</p>
-{% endif %}
-
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <div class="text-center py-4">
+          <h5 class="text-muted">No requests received yet 🕊️</h5>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -1,8 +1,77 @@
 {% extends 'blood/base.html' %}
+{% block title %}Request Blood{% endblock %}
+
 {% block content %}
-<h3>Request Blood from {{ donor.user.username }}</h3>
-<form method="post">{% csrf_token %}
-  <textarea name="reason" class="form-control mb-2" placeholder="Why do you need blood?" required></textarea>
-  <button class="btn btn-danger">Send Request</button>
-</form>
+<style>
+/* 🌟 Stylish Blood Request Form */
+.request-container {
+    max-width: 600px;
+    margin: 50px auto;
+}
+.request-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+.request-card:hover {
+    transform: translateY(-3px);
+}
+.request-header {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    color: white;
+    text-align: center;
+    padding: 20px 15px;
+}
+.request-header h3 {
+    margin: 0;
+    font-weight: 600;
+}
+.request-body {
+    padding: 25px;
+}
+.request-body textarea {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    resize: none;
+    transition: all 0.3s ease;
+}
+.request-body textarea:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 6px rgba(255,75,43,0.4);
+}
+.btn-request {
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btn-request:hover {
+    background: linear-gradient(135deg, #ff6a3d, #ff5c8d);
+    transform: scale(1.02);
+}
+</style>
+
+<div class="container request-container">
+    <div class="request-card">
+        <div class="request-header">
+            <h3>🩸 Request Blood from {{ donor.user.username }}</h3>
+        </div>
+        <div class="request-body">
+            <form method="post">
+                {% csrf_token %}
+                <label for="reason" class="form-label fw-semibold mb-2">Reason for Request:</label>
+                <textarea name="reason" id="reason" class="form-control mb-4" rows="4"
+                          placeholder="Explain briefly why you need blood..." required></textarea>
+                <button type="submit" class="btn btn-request">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

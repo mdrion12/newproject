@@ -1,14 +1,49 @@
 {% extends 'blood/base.html' %}
+{% block title %}Create Donor Profile{% endblock %}
+
 {% block content %}
-<h2>Create Donor Profile</h2>
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
-  <input type="text" name="blood_group" placeholder="Blood Group" class="form-control mb-2" required>
-  <input type="text" name="phone" placeholder="Phone" class="form-control mb-2" required>
-  <input type="text" name="department" placeholder="Department" class="form-control mb-2" required>
-  
-  <!-- Profile picture upload -->
-  <input type="file" name="profile_pic" class="form-control mb-2">
-  
-  <button class="btn btn-danger" type="submit">Save</button>
-</form>
+<div class="container mt-5 mb-5">
+  <div class="card shadow-lg border-0 rounded-4 mx-auto" style="max-width: 550px;">
+    <div class="card-header bg-danger text-white text-center rounded-top-4">
+      <h3 class="mb-0">🩸 Create Donor Profile</h3>
+    </div>
+
+    <div class="card-body bg-light p-4">
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <!-- Blood Group -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Blood Group</label>
+          <input type="text" name="blood_group" class="form-control rounded-3" placeholder="e.g. A+, O-, B+" required>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Phone Number</label>
+          <input type="text" name="phone" class="form-control rounded-3" placeholder="Enter your phone number" required>
+        </div>
+
+        <!-- Department -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Department</label>
+          <input type="text" name="department" class="form-control rounded-3" placeholder="Enter your department" required>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Profile Picture (optional)</label>
+          <input type="file" name="profile_pic" class="form-control rounded-3">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-4">
+          <button class="btn btn-danger px-5 py-2 rounded-pill shadow-sm" type="submit">
+            💾 Save Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

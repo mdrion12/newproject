@@ -1,7 +1,21 @@
 {% extends 'blood/base.html' %}
+{% block title %}Request Sent{% endblock %}
+
 {% block content %}
-<div class="alert alert-success">
-  Request sent successfully to {{ donor.user.username }} ({{ donor.blood_group }})
+<div class="container mt-5 mb-5" style="max-width: 600px;">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header text-center rounded-top-4" style="background: linear-gradient(135deg, #ff416c, #ff4b2b); color:white;">
+      <h3 class="mb-0">✅ Request Sent!</h3>
+    </div>
+    <div class="card-body text-center bg-light p-4">
+      <p class="fw-semibold fs-5 mb-3">
+        Your request has been successfully sent to <strong>{{ donor.user.username }}</strong> 
+        (<strong>{{ donor.blood_group }}</strong>).
+      </p>
+      <a href="{% url 'donor_list' %}" class="btn btn-outline-danger btn-lg rounded-pill px-4 py-2">
+        🔙 Back to Donors
+      </a>
+    </div>
+  </div>
 </div>
-<a href="{% url 'donor_list' %}" class="btn btn-outline-danger">Back to Donors</a>
 {% endblock %}

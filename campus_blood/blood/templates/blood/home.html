@@ -3,58 +3,92 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<!-- Fullscreen Background -->
-<div style="
+<style>
+/* Fullscreen Background with overlay */
+.home-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('{% static 'blood/images/bg3.png' %}');
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('{% static "blood/images/bg3.png" %}');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
-"></div>
+    filter: brightness(0.6);
+}
 
-<!-- Page Content -->
-<div class="container text-center" style="padding-top: 120px; color: white; text-shadow: 1px 1px 5px rgba(0,0,0,0.7);">
-    <h1 class="mb-3" style="font-size:3rem;">Welcome to Campus Blood</h1>
-    <p class="lead mb-3" style="font-size:1.5rem;">
-        Donate blood, save lives. Your small act can make a huge difference!
-    </p>
+/* Gradient Button Hover */
+.btn-gradient {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+.btn-gradient:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(255,65,108,0.4);
+}
+
+/* Info Cards */
+.info-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Section Headings */
+.info-card h3 {
+    color: #ff416c;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+</style>
+
+<div class="home-bg"></div>
+
+<div class="container text-center text-white" style="padding-top:120px; text-shadow: 1px 1px 6px rgba(0,0,0,0.7);">
+    <h1 class="mb-3 display-4 fw-bold">Welcome to Campus Blood</h1>
+    <p class="lead mb-4 fs-4">Donate blood, save lives. Your small act can make a huge difference!</p>
     
-    <p style="font-size:1.2rem;">
-        It is recommended to donate blood every <strong>3 months</strong> for men and <strong>4 months</strong> for women.
-    </p>
+    <div class="mb-4">
+        <a href="{% url 'login' %}" class="btn btn-light btn-lg me-2 rounded-pill px-4 py-2">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-gradient btn-lg rounded-pill px-4 py-2">Register</a>
+        <a href="{% url 'donor_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2 ms-2">View Donors</a>
+    </div>
 
-    <a href="{% url 'login' %}" class="btn btn-light mt-3 me-2">Login</a>
-    <a href="{% url 'register' %}" class="btn btn-danger mt-3">Register</a>
-    <a href="{% url 'donor_list' %}" class="btn btn-outline-light mt-3 ms-2">View Available Donors</a>
+    <!-- Info Sections -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="info-card text-dark">
+                <h3>🩸 Why Donate Blood?</h3>
+                <ul class="mb-3">
+                    <li>One blood donation can save up to <strong>three lives</strong>.</li>
+                    <li>Regular donation helps maintain healthy blood flow.</li>
+                    <li>Blood is always in demand in hospitals for emergencies, surgeries, and treatments.</li>
+                </ul>
 
-    <!-- Importance Section -->
-    <div class="mt-5 text-start p-4 rounded" style="background: rgba(0,0,0,0.5);">
-        <h3>Why Donate Blood?</h3>
-        <ul style="font-size:1.1rem;">
-            <li>One blood donation can save up to <strong>three lives</strong>.</li>
-            <li>Regular donation helps maintain healthy blood flow.</li>
-            <li>Blood is always in demand in hospitals for emergencies, surgeries, and treatments.</li>
-        </ul>
+                <h3>✅ Eligibility Criteria</h3>
+                <ul class="mb-3">
+                    <li>Age between 18-65 years.</li>
+                    <li>Weight at least 50 kg.</li>
+                    <li>Healthy and free from infections.</li>
+                    <li>No major illnesses or chronic diseases.</li>
+                </ul>
 
-        <h3>Eligibility Criteria</h3>
-        <ul style="font-size:1.1rem;">
-            <li>Age between 18-65 years.</li>
-            <li>Weight at least 50 kg.</li>
-            <li>Healthy and free from infections.</li>
-            <li>No major illnesses or chronic diseases.</li>
-        </ul>
-
-        <h3>Blood Donation Tips</h3>
-        <ul style="font-size:1.1rem;">
-            <li>Eat a healthy meal and drink plenty of water before donating.</li>
-            <li>Rest well and avoid alcohol 24 hours before donation.</li>
-            <li>After donation, avoid heavy exercise for the day.</li>
-        </ul>
+                <h3>💡 Blood Donation Tips</h3>
+                <ul>
+                    <li>Eat a healthy meal and drink plenty of water before donating.</li>
+                    <li>Rest well and avoid alcohol 24 hours before donation.</li>
+                    <li>After donation, avoid heavy exercise for the day.</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 

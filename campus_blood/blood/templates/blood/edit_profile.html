@@ -2,45 +2,100 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <h2 class="text-center mb-4">Edit Your Profile</h2>
+<style>
+/* 🌟 Custom Stylish Edit Profile Page */
+.edit-profile-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+.edit-profile-card:hover {
+    transform: translateY(-3px);
+}
+.edit-header {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+.edit-header h2 {
+    font-weight: 600;
+}
+label.form-label {
+    font-weight: 600;
+    color: #444;
+}
+.btn-success {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    border: none;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+.btn-success:hover {
+    background: linear-gradient(135deg, #96c93d, #00b09b);
+    transform: scale(1.02);
+}
+.form-control, .form-select {
+    border-radius: 10px;
+}
+.profile-pic-preview img {
+    border: 3px solid #00b09b;
+    box-shadow: 0 0 10px rgba(0,176,155,0.3);
+}
+</style>
 
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
-        <div class="card-body">
+<div class="container py-5">
+    <div class="edit-profile-card mx-auto" style="max-width: 650px;">
+        <div class="edit-header">
+            <h2>✏️ Edit Your Profile</h2>
+            <p class="mb-0">Keep your blood donor information up to date ❤️</p>
+        </div>
+
+        <div class="card-body p-4">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
 
                 <div class="mb-3">
-                    <label for="id_blood_group" class="form-label">Blood Group</label>
+                    <label for="id_blood_group" class="form-label">🩸 Blood Group</label>
                     {{ form.blood_group }}
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_phone" class="form-label">Phone</label>
+                    <label for="id_phone" class="form-label">📞 Phone</label>
                     {{ form.phone }}
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_department" class="form-label">Department</label>
+                    <label for="id_department" class="form-label">🏫 Department</label>
                     {{ form.department }}
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_profile_pic" class="form-label">Profile Picture</label>
+                    <label for="id_profile_pic" class="form-label">🖼 Profile Picture</label>
                     {{ form.profile_pic }}
                     {% if donor_profile.profile_pic %}
-                        <div class="mt-2">
-                            <img src="{{ donor_profile.profile_pic.url }}" class="rounded-circle" style="width:100px; height:100px; object-fit:cover;">
+                        <div class="profile-pic-preview mt-3 text-center">
+                            <img src="{{ donor_profile.profile_pic.url }}" class="rounded-circle" 
+                                 style="width:100px; height:100px; object-fit:cover;">
                         </div>
                     {% endif %}
                 </div>
-                <div class="form-check mb-3">
-                    {{ form.available }} <label class="form-check-label" for="id_available">Available</label>
+
+                <div class="form-check form-switch mb-3">
+                    {{ form.available }} 
+                    <label class="form-check-label ms-1" for="id_available">Available for Donation</label>
                 </div>
+
                 <div class="mb-3">
-                    <label for="id_last_donation_date" class="form-label">Last Donation Date</label>
+                    <label for="id_last_donation_date" class="form-label">🗓 Last Donation Date</label>
                     {{ form.last_donation_date }}
                 </div>
 
-                <button type="submit" class="btn btn-success w-100">Update Profile</button>
+                <button type="submit" class="btn btn-success w-100 py-2">💾 Update Profile</button>
             </form>
         </div>
     </div>
