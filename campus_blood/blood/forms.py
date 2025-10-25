@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Donor
+from .models import DonationHistory
+from .models import DonationHistory
 
 # 🔹 Donor profile form
 class DonorForm(forms.ModelForm):
@@ -41,3 +43,19 @@ class CustomAuthenticationForm(AuthenticationForm):
         'class': 'form-control',
         'placeholder': 'Enter your password'
     }))
+# forms.py
+
+
+class DonationHistoryForm(forms.ModelForm):
+    class Meta:
+        model = DonationHistory
+        fields = ['receiver_name', 'location', 'date', 'notes']
+
+
+class DonationHistoryForm(forms.ModelForm):
+    class Meta:
+        model = DonationHistory
+        fields = ['receiver_name', 'location', 'date', 'notes']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'})
+        }

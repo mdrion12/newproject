@@ -3,11 +3,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Donor, Request
-from .forms import DonorForm, CustomUserCreationForm, CustomAuthenticationForm
+from .forms import DonorForm, CustomUserCreationForm, CustomAuthenticationForm ,DonationHistoryForm
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
-
+from .models import Donor, DonationHistory
 
 # --- Home ---
 def home(request):
@@ -144,6 +144,8 @@ def create_donor_profile(request):
     return render(request, 'blood/create_donor.html')
 
 
+
+
 @login_required
 def profile(request):
     """
@@ -155,6 +157,17 @@ def profile(request):
         donor_profile = Donor.objects.get(user=request.user)
     except Donor.DoesNotExist:
         return redirect('create_donor_profile')
+
+    # =========================
+    # Update donation info automatically
+    # =========================
+    # 1. Last donation date
+    last_donation = DonationHistory.objects.filter(donor=donor_profile).order_by('-date').first()
+    donor_profile.last_donation_date = last_donation.date if last_donation else None
+
+    # 2. Total donation count
+    donor_profile.donation_count = DonationHistory.objects.filter(donor=donor_profile).count()
+    # =========================
 
     return render(request, 'blood/profile.html', {'donor_profile': donor_profile})
 
@@ -213,3 +226,20 @@ def edit_profile(request):
         'form': form,
         'donor_profile': donor_profile  
     })
+
+
+@login_required
+def add_donation(request):
+    donor = get_object_or_404(Donor, user=request.user)
+    
+    if request.method == 'POST':
+        form = DonationHistoryForm(request.POST)
+        if form.is_valid():
+            donation = form.save(commit=False)
+            donation.donor = donor
+            donation.save()  # signal auto update করবে donation_count & last_donation_date
+            return redirect('profile')
+    else:
+        form = DonationHistoryForm()
+    
+    return render(request, 'blood/add_donation.html', {'form': form})

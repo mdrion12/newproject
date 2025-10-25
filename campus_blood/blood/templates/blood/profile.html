@@ -26,14 +26,23 @@
     border: none;
     border-bottom: 1px solid #eee;
 }
-.btn-primary {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+.btn-primary, .btn-success {
     border: none;
     border-radius: 30px;
     transition: 0.3s;
 }
+.btn-primary {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
 .btn-primary:hover {
     background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    transform: scale(1.02);
+}
+.btn-success {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+}
+.btn-success:hover {
+    background: linear-gradient(135deg, #96c93d, #00b09b);
     transform: scale(1.02);
 }
 #availabilityToggle {
@@ -70,6 +79,29 @@
                     </div>
                 </li>
             </ul>
+
+            <!-- Add Donation Button -->
+            <div class="text-center mb-3">
+                <a href="{% url 'add_donation' %}" class="btn btn-success px-4 py-2">➕ Add Donation</a>
+            </div>
+
+            <!-- Donation History -->
+            <h4 class="mt-4">🩸 Donation History</h4>
+            {% if donor_profile.donations.exists %}
+                <ul class="list-group mb-3">
+                    {% for donation in donor_profile.donations.all|dictsortreversed:"date" %}
+                    <li class="list-group-item">
+                        <strong>{{ donation.date }}:</strong>
+                        {% if donation.receiver_name %}{{ donation.receiver_name }}{% else %}Unknown{% endif %}
+                        at {% if donation.location %}{{ donation.location }}{% else %}Unknown Location{% endif %}
+                        {% if donation.notes %}- Notes: {{ donation.notes }}{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No donation history yet.</p>
+            {% endif %}
+
             <div class="text-center">
                 <a href="{% url 'edit_profile' %}" class="btn btn-primary px-4 py-2">✏️ Edit Profile</a>
             </div>

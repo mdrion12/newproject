@@ -59,14 +59,6 @@ label.form-label {
                 {% csrf_token %}
                 {{ form.non_field_errors }}
 
-                <!-- Total Donations (Manual Input) -->
-                <div class="mb-3">
-                    <label for="id_donation_count" class="form-label">🩸 Total Donations</label>
-                    <input type="number" name="donation_count" id="id_donation_count" 
-                           class="form-control" min="0" value="{{ donor_profile.donation_count|default:"0" }}">
-                    <small class="text-muted">You can manually update your total donations.</small>
-                </div>
-
                 <div class="mb-3">
                     <label for="id_blood_group" class="form-label">🩸 Blood Group</label>
                     {{ form.blood_group }}
@@ -96,11 +88,6 @@ label.form-label {
                 <div class="form-check form-switch mb-3">
                     {{ form.available }} 
                     <label class="form-check-label ms-1" for="id_available">Available for Donation</label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="id_last_donation_date" class="form-label">🗓 Last Donation Date</label>
-                    {{ form.last_donation_date }}
                 </div>
 
                 <button type="submit" class="btn btn-success w-100 py-2">💾 Update Profile</button>

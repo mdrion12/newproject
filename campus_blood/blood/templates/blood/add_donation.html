@@ -1,0 +1,13 @@
+{% extends 'blood/base.html' %}
+{% block title %}Add Donation{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width:600px;">
+    <h2 class="mb-4 text-center">➕ Add Donation</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success w-100 py-2">💾 Save Donation</button>
+    </form>
+</div>
+{% endblock %}
