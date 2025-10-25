@@ -196,9 +196,20 @@ def edit_profile(request):
     if request.method == 'POST':
         form = DonorForm(request.POST, request.FILES, instance=donor_profile)
         if form.is_valid():
-            form.save()
+            donor = form.save(commit=False)
+            # Manual donation_count update
+            donation_count = request.POST.get('donation_count')
+            if donation_count is not None:
+                try:
+                    donor.donation_count = int(donation_count)
+                except ValueError:
+                    donor.donation_count = donor.donation_count 
+            donor.save()
             return redirect('profile')
     else:
         form = DonorForm(instance=donor_profile)
 
-    return render(request, 'blood/edit_profile.html', {'form': form})
+    return render(request, 'blood/edit_profile.html', {
+        'form': form,
+        'donor_profile': donor_profile  
+    })

@@ -3,7 +3,7 @@
 
 {% block content %}
 <style>
-/* 🌟 Custom Stylish Edit Profile Page */
+/* 🌟 Stylish Edit Profile Page */
 .edit-profile-card {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
@@ -58,6 +58,14 @@ label.form-label {
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
+
+                <!-- Total Donations (Manual Input) -->
+                <div class="mb-3">
+                    <label for="id_donation_count" class="form-label">🩸 Total Donations</label>
+                    <input type="number" name="donation_count" id="id_donation_count" 
+                           class="form-control" min="0" value="{{ donor_profile.donation_count|default:"0" }}">
+                    <small class="text-muted">You can manually update your total donations.</small>
+                </div>
 
                 <div class="mb-3">
                     <label for="id_blood_group" class="form-label">🩸 Blood Group</label>
