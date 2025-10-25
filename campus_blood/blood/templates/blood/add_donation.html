@@ -2,12 +2,89 @@
 {% block title %}Add Donation{% endblock %}
 
 {% block content %}
-<div class="container py-5" style="max-width:600px;">
-    <h2 class="mb-4 text-center">➕ Add Donation</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success w-100 py-2">💾 Save Donation</button>
-    </form>
+<style>
+/* Wrapper for center alignment */
+.donation-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 50px 15px;
+}
+
+/* Card Style */
+.donation-card {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.donation-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Card Heading */
+.donation-card h2 {
+    color: #ff416c;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Form Inputs */
+.donation-card input,
+.donation-card select,
+.donation-card textarea {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px 12px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.donation-card input:focus,
+.donation-card select:focus,
+.donation-card textarea:focus {
+    border-color: #ff416c;
+    box-shadow: 0 0 5px rgba(255,65,108,0.2);
+}
+
+/* Submit Button */
+.btn-gradient {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.btn-gradient:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(255,65,108,0.4);
+}
+</style>
+
+<div class="donation-wrapper">
+    <div class="donation-card">
+        <h2>➕ Add Donation</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Loop through form fields -->
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-gradient w-100 py-2">💾 Save Donation</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
