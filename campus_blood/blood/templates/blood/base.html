@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,20 +6,106 @@
     <title>{% block title %}Campus Blood{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Body flex layout so footer stays at bottom */
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+        }
+
+        /* Main content takes remaining space */
+        .content-wrapper {
+            flex: 1;
+        }
+
+        /* Navbar profile picture */
         .navbar-profile-pic {
             width: 35px;
             height: 35px;
             object-fit: cover;
             border-radius: 50%;
         }
+
+        /* Gradient navbar */
+        .navbar-custom {
+            background: linear-gradient(90deg, #ff3b3f, #ff6f61, #00d4ff);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: 0.3s;
+        }
+        .navbar-custom .nav-link {
+            color: #fff;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #ffeb3b;
+            transform: scale(1.05);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand img {
+            border-radius: 50%;
+            margin-right: 8px;
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .dropdown-item:hover {
+            background-color: #00d4ff;
+            color: #ff3b3f;
+            font-weight: 600;
+        }
+
+        /* Mobile toggle button */
+        .navbar-toggler {
+            border-color: #ffffff;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(90deg, #ff3b3f, #ff6f61, #00d4ff);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.25);
+            width: 100%;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
     </style>
 </head>
-<body class="bg-light">
+<body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'dashboard' %}">Campus Blood</a>
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'blood/images/ice logo.jpg' %}" alt="College Logo">
+            ICE🩸
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,7 +120,6 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'donor_list' %}">Available Donors</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'donor_requests' %}">My Requests</a></li>
 
-                    <!-- User Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {% if user.donor.profile_pic %}
@@ -59,10 +145,17 @@
     </div>
 </nav>
 
-<!-- Main Content -->
-<div class="container mt-4">
+<!-- Main Content Wrapper -->
+<div class="content-wrapper container mt-4">
     {% block content %}{% endblock %}
 </div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container-fluid text-center">
+        &copy; {{ year|default:2025 }} ICE Blood Donation | Made with ❤️ by Students | <a href="{% url 'home' %}">Home</a>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

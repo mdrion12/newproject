@@ -4,24 +4,42 @@
 
 {% block content %}
 <style>
-/* Fullscreen Background with overlay */
-.home-bg {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: url('{% static "blood/images/bg3.png" %}');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1;
-    filter: brightness(0.6);
+/* Hero Section with gradient background */
+.hero {
+    background: linear-gradient(135deg, #ff416c, #ff6f61, #ff9a9e);
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    margin-bottom: 50px;
 }
 
-/* Gradient Button Hover */
+/* Hero headings */
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+.hero p {
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.2);
+}
+
+/* Hero buttons */
 .btn-gradient {
     background: linear-gradient(135deg, #ff416c, #ff4b2b);
     border: none;
     color: white;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 .btn-gradient:hover {
@@ -29,74 +47,80 @@
     box-shadow: 0 6px 15px rgba(255,65,108,0.4);
 }
 
-/* Info Cards */
-.info-card {
-    background: rgba(255,255,255,0.95);
-    border-radius: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    padding: 25px;
-    margin-bottom: 30px;
-    transition: transform 0.3s ease;
-}
-.info-card:hover {
-    transform: translateY(-5px);
+/* Info Cards Section */
+.info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 50px;
 }
 
-/* Section Headings */
+.info-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+    padding: 25px;
+    flex: 1 1 300px;
+    max-width: 350px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
 .info-card h3 {
     color: #ff416c;
     font-weight: 600;
     margin-bottom: 15px;
 }
+.info-card ul {
+    padding-left: 20px;
+}
+.info-card ul li {
+    margin-bottom: 8px;
+}
 </style>
 
-<div class="home-bg"></div>
-
-<div class="container text-center text-white" style="padding-top:120px; text-shadow: 1px 1px 6px rgba(0,0,0,0.7);">
-    <h1 class="mb-3 display-4 fw-bold">Welcome to Campus Blood</h1>
-    <p class="lead mb-4 fs-4">Donate blood, save lives. Your small act can make a huge difference!</p>
-    
-    <div class="mb-4">
-        <a href="{% url 'login' %}" class="btn btn-light btn-lg me-2 rounded-pill px-4 py-2">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-gradient btn-lg rounded-pill px-4 py-2">Register</a>
-        <a href="{% url 'donor_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2 ms-2">View Donors</a>
+<!-- Hero Section -->
+<div class="container">
+    <div class="hero">
+        <h1>Welcome to Campus Blood</h1>
+        <p>Donate blood, save lives. Your small act can make a huge difference!</p>
+        <div>
+            <a href="{% url 'login' %}" class="btn btn-light btn-lg me-2 rounded-pill px-4 py-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-gradient btn-lg rounded-pill px-4 py-2">Register</a>
+            <a href="{% url 'donor_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4 py-2 ms-2">View Donors</a>
+        </div>
     </div>
 
-    <!-- Info Sections -->
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-10">
-            <div class="info-card text-dark">
-                <h3>🩸 Why Donate Blood?</h3>
-                <ul class="mb-3">
-                    <li>One blood donation can save up to <strong>three lives</strong>.</li>
-                    <li>Regular donation helps maintain healthy blood flow.</li>
-                    <li>Blood is always in demand in hospitals for emergencies, surgeries, and treatments.</li>
-                </ul>
-
-                <h3>✅ Eligibility Criteria</h3>
-                <ul class="mb-3">
-                    <li>Age between 18-65 years.</li>
-                    <li>Weight at least 50 kg.</li>
-                    <li>Healthy and free from infections.</li>
-                    <li>No major illnesses or chronic diseases.</li>
-                </ul>
-
-                <h3>💡 Blood Donation Tips</h3>
-                <ul>
-                    <li>Eat a healthy meal and drink plenty of water before donating.</li>
-                    <li>Rest well and avoid alcohol 24 hours before donation.</li>
-                    <li>After donation, avoid heavy exercise for the day.</li>
-                </ul>
-            </div>
+    <!-- Info Section -->
+    <div class="info-section">
+        <div class="info-card">
+            <h3>🩸 Why Donate Blood?</h3>
+            <ul>
+                <li>One donation can save up to <strong>three lives</strong>.</li>
+                <li>Regular donation helps maintain healthy blood flow.</li>
+                <li>Blood is always needed for emergencies and treatments.</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>✅ Eligibility Criteria</h3>
+            <ul>
+                <li>Age: 18-65 years.</li>
+                <li>Weight: At least 50 kg.</li>
+                <li>Healthy and free from infections.</li>
+                <li>No major illnesses or chronic diseases.</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>💡 Donation Tips</h3>
+            <ul>
+                <li>Eat a healthy meal and drink plenty of water before donating.</li>
+                <li>Rest well and avoid alcohol 24 hours prior.</li>
+                <li>After donation, avoid heavy exercise for the day.</li>
+            </ul>
         </div>
     </div>
 </div>
-
-<!-- Footer -->
-<footer class="bg-dark text-white mt-5 py-3" style="position: relative; z-index: 1;">
-    <div class="container text-center">
-        <p>&copy; {{ now.year }} Campus Blood. All Rights Reserved.</p>
-        <p>Contact: info@campusblood.com | Phone: +880 1234 567890</p>
-    </div>
-</footer>
 {% endblock %}
