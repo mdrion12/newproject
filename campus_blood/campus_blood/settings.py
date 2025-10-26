@@ -4,10 +4,12 @@ import os
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings
-SECRET_KEY = 'django-insecure-1wdw#-v0^0*n#p6bpr^wrib67c_^jx3))yh+88=aouslu(06^u'
-DEBUG = True
-ALLOWED_HOSTS = []
+# Quick-start deployment settings
+SECRET_KEY = 'django-insecure-1wdw#-v0^0*n#p6bpr^wrib67c_^jx3))yh+88=aouslu(06^u)'
+DEBUG = False  # Production mode
+
+# Render deploy URL (replace with actual URL after deploy)
+ALLOWED_HOSTS = ['reddote.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -18,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blood',
-    'widget_tweaks',  # for form styling
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -31,12 +33,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'campus_blood.urls'
+ROOT_URLCONF = 'reddote.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # templates folder
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -49,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'campus_blood.wsgi.application'
+WSGI_APPLICATION = 'reddote.wsgi.application'
 
 # Database
 DATABASES = {
@@ -60,8 +62,8 @@ DATABASES = {
 }
 
 # Login settings
-LOGIN_URL = '/login/'   
-LOGIN_REDIRECT_URL = '/'  
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -77,19 +79,19 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Media files (for profile pictures)
+# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Static files (CSS, JS, Images)
+# Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]  # dev static
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")     # collectstatic destination
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Settings (Gmail)
+# Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
