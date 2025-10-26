@@ -7,7 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings
 SECRET_KEY = 'django-insecure-1wdw#-v0^0*n#p6bpr^wrib67c_^jx3))yh+88=aouslu(06^u'
 DEBUG = True
-ALLOWED_HOSTS = ['campus-blood.onrender.com', '127.0.0.1', 'localhost']  # Render URL + local testing
+ALLOWED_HOSTS = [
+    'icereddot.onrender.com',
+    'campus-blood.onrender.com',
+    '127.0.0.1',
+    'localhost'
+]
+
 
 # Application definition
 INSTALLED_APPS = [
