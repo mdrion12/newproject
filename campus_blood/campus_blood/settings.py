@@ -95,11 +95,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"          # collectstatic destination
 # Default primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Settings (Gmail)
+# Email Settings (Mailjet)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'in-v3.mailjet.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'reon128633@gmail.com'
-EMAIL_HOST_PASSWORD = 'diyk ahyg bqkk rnrg'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER', 'fcabc45474378db83bf843b994581f67')  # Mailjet API Key
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS', 'd87a0be2738844f3935ff7db4703e5db')  # Mailjet Secret Key
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'reon128633@gmail.com')  # Verified sender

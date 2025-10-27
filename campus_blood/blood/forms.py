@@ -52,10 +52,4 @@ class DonationHistoryForm(forms.ModelForm):
         fields = ['receiver_name', 'location', 'date', 'notes']
 
 
-class DonationHistoryForm(forms.ModelForm):
-    class Meta:
-        model = DonationHistory
-        fields = ['receiver_name', 'location', 'date', 'notes']
-        widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'})
-        }
+
