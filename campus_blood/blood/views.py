@@ -2,12 +2,41 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Donor, Request
-from .forms import DonorForm, CustomUserCreationForm, CustomAuthenticationForm ,DonationHistoryForm
+from .models import Donor, Request, DonationHistory
+from .forms import DonorForm, CustomUserCreationForm, CustomAuthenticationForm, DonationHistoryForm
 from django.http import JsonResponse
-from django.core.mail import send_mail
 from django.conf import settings
-from .models import Donor, DonationHistory
+from mailjet_rest import Client
+import os
+
+# --- Mailjet email function ---
+def send_email_via_mailjet(subject, recipient, message):
+    api_key = os.environ.get('EMAIL_USER')
+    api_secret = os.environ.get('EMAIL_PASS')
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+    
+    data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": os.environ.get('DEFAULT_FROM_EMAIL'),
+                    "Name": "Campus Blood"
+                },
+                "To": [
+                    {
+                        "Email": recipient,
+                        "Name": "Recipient"
+                    }
+                ],
+                "Subject": subject,
+                "TextPart": message,
+            }
+        ]
+    }
+    result = mailjet.send.create(data=data)
+    print("Mailjet status:", result.status_code)
+    return result.status_code, result.json()
+
 
 # --- Home ---
 def home(request):
@@ -55,9 +84,7 @@ def dashboard(request):
     except Donor.DoesNotExist:
         donor_profile = None
 
-    # শুধুমাত্র available=True থাকা donor exclude current user
     donors = Donor.objects.filter(available=True).exclude(user=user)
-
     my_requests = Request.objects.filter(requester=user) if 'Request' in globals() else []
 
     context = {
@@ -69,7 +96,6 @@ def dashboard(request):
 
 
 # --- Donor Section ---
-
 @login_required
 def donor_list(request):
     blood_group = request.GET.get('blood_group')
@@ -104,18 +130,18 @@ def request_donor(request, donor_id):
             reason=reason
         )
 
-        # Send email to donor
+        # Send email via Mailjet
         subject = "New Blood Request Received"
         message = f"Hello {donor.user.username},\n\nYou have received a new blood request from {request.user.username}.\nReason: {reason}\n\nPlease check your dashboard to respond."
         recipient = donor.user.email
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient], fail_silently=True)
+        send_email_via_mailjet(subject, recipient, message)
 
         return render(request, 'blood/request_sent.html', {'donor': donor})
     return render(request, 'blood/request_form.html', {'donor': donor})
 
+
 @login_required
 def create_donor_profile(request):
-    # যদি donor already থাকে, redirect directly to profile
     if Donor.objects.filter(user=request.user).exists():
         return redirect('profile')
 
@@ -125,13 +151,11 @@ def create_donor_profile(request):
         department = request.POST.get('department')
         profile_pic = request.FILES.get('profile_pic')
 
-        # Validate required fields
         if not blood_group or not phone or not department:
             return render(request, 'blood/create_donor.html', {
                 'error': "Please fill in all required fields!"
             })
 
-        # Create donor profile
         donor = Donor.objects.create(
             user=request.user,
             blood_group=blood_group,
@@ -144,32 +168,19 @@ def create_donor_profile(request):
     return render(request, 'blood/create_donor.html')
 
 
-
-
 @login_required
 def profile(request):
-    """
-    Donor profile view
-    - যদি donor না থাকে → redirect to create_donor_profile
-    - যদি থাকে → show profile
-    """
     try:
         donor_profile = Donor.objects.get(user=request.user)
     except Donor.DoesNotExist:
         return redirect('create_donor_profile')
 
-    # =========================
-    # Update donation info automatically
-    # =========================
-    # 1. Last donation date
     last_donation = DonationHistory.objects.filter(donor=donor_profile).order_by('-date').first()
     donor_profile.last_donation_date = last_donation.date if last_donation else None
-
-    # 2. Total donation count
     donor_profile.donation_count = DonationHistory.objects.filter(donor=donor_profile).count()
-    # =========================
 
     return render(request, 'blood/profile.html', {'donor_profile': donor_profile})
+
 
 @login_required
 def toggle_availability(request):
@@ -193,11 +204,11 @@ def respond_request(request, req_id, status):
         req.status = status
         req.save()
 
-        # Send email to requester
+        # Send email via Mailjet
         subject = f"Your Blood Request has been {status}"
         message = f"Hello {req.requester.username},\n\nYour blood request to {req.donor.user.username} has been {status.lower()}.\n\nThank you for using Campus Blood!"
         recipient = req.requester.email
-        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient], fail_silently=True)
+        send_email_via_mailjet(subject, recipient, message)
 
     return redirect('donor_requests')
 
@@ -210,7 +221,6 @@ def edit_profile(request):
         form = DonorForm(request.POST, request.FILES, instance=donor_profile)
         if form.is_valid():
             donor = form.save(commit=False)
-            # Manual donation_count update
             donation_count = request.POST.get('donation_count')
             if donation_count is not None:
                 try:
@@ -237,7 +247,7 @@ def add_donation(request):
         if form.is_valid():
             donation = form.save(commit=False)
             donation.donor = donor
-            donation.save()  # signal auto update করবে donation_count & last_donation_date
+            donation.save()
             return redirect('profile')
     else:
         form = DonationHistoryForm()
